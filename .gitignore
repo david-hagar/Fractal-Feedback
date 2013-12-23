@@ -1,0 +1,18 @@
+# IntelliJ IDEA files
+*.iml
+*.ipr
+*.iws
+**/*.iml
+.idea
+**/.idea
+.idea/*
+
+# For Gem
+pkg/
+pkg/*
+
+.ruby-version
+
+#General
+
+.DS_Store
