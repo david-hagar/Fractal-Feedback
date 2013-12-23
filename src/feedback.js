@@ -90,11 +90,11 @@ var Feedback = Class.create({
 
     _initControls: function() {
 
-        var mouseOptions = this.mouseOptions = [ 'Off', '+X Mouse', '+Y Mouse' , '-X Mouse', '-Y Mouse' ];
+        var mouseOptions = this.mouseOptions = [ 'Off', '+X', '-X', '+Y' , '-Y' ];
         this.mouseOptions.off = this.mouseOptions[0];
         this.mouseOptions.mouseX = this.mouseOptions[1];
-        this.mouseOptions.mouseY = this.mouseOptions[2];
-        this.mouseOptions.minusMouseX = this.mouseOptions[3];
+        this.mouseOptions.mouseY = this.mouseOptions[3];
+        this.mouseOptions.minusMouseX = this.mouseOptions[2];
         this.mouseOptions.minusMouseY = this.mouseOptions[4];
 
 
@@ -117,6 +117,7 @@ var Feedback = Class.create({
 
 
         var gui = new dat.GUI();
+        gui.close();
 
         for (var i = 0; i < this.controls.transforms.length; i++) {
             var transform = this.controls.transforms[i];
@@ -203,14 +204,16 @@ var Feedback = Class.create({
 
         var s = 375;
         var aspect =  this.renderer.domElement.height / this.renderer.domElement.width;
-        var leftGeom = new THREE.PlaneGeometry(s, s*aspect);
+        var transformBoxGeom = new THREE.PlaneGeometry(s, s*aspect);
 
-
-        this._addObject(-100, 0, 1.4, -Math.PI / 4, 1.25, 0.95, leftGeom, this.controls.transforms[0]);
-        this._addObject(100, 0, 1.3, -Math.PI / 4, 1.25, 0.95, leftGeom, this.controls.transforms[1]);
+        this._addObject(-100, 0, 1.4, -Math.PI / 4, 1.25, 0.95, transformBoxGeom, this.controls.transforms[0]);
+        this._addObject(100, 0, 1.3, -Math.PI / 4, 1.25, 0.95, transformBoxGeom, this.controls.transforms[1]);
 
         //todo: make root geom size adjustable
-        var geom = new THREE.PlaneGeometry(75, 75);
+        //var geom = new THREE.PlaneGeometry(75, 75);
+        var geom = new THREE.CircleGeometry(50, 32);
+
+
         var color = new THREE.Color().setHSL(this.hue, 0.9, 0.5);
 
         //todo: make opacity controllable
@@ -242,8 +245,11 @@ var Feedback = Class.create({
 
     updateFrame: function() {
 
+        //var hueMouseOffset =  (this.getOffset( this.mouseOptions.mouseX ) +    this.getOffset( this.mouseOptions.mouseY ))*0;
+        var hueSaturation    = (this.hue >0.9 && this.hue<1.0) ? 1.0:0.5;
+        var hueBrightness    = (this.hue >0.9 && this.hue<1.0) ? 0.9:0.4;
         this.hue = (this.hue + 0.005 ) % 1;
-        this.objectMaterial.color = new THREE.Color().setHSL(this.hue, 0.5, 0.4);    //todo: make this a control
+        this.objectMaterial.color = new THREE.Color().setHSL(this.hue, hueSaturation, hueBrightness);    //todo: make this a control
 
         this.screenCopyContext.setTransform(1, 0, 0, 1, 0, 0);
         this.screenCopyContext.clearRect(0, 0, this.renderer.domElement.width, this.renderer.domElement.height);
@@ -320,6 +326,24 @@ var Feedback = Class.create({
         var xNormalized = ( x / container.width()) * 2 - 1;
         var yNormalized = - ( y / container.height() ) * 2 + 1;
         return new THREE.Vector3(xNormalized, yNormalized, 0);
+    },
+
+    generateCircleGeom:function(radius, segments){
+        var circle = new THREE.Shape();
+
+        for (var i = 0; i < segments; i++) {
+          var pct = (i + 1) / segments;
+          var theta = pct * Math.PI * 2.0;
+          var x = radius * Math.cos(theta);
+          var y = radius * Math.sin(theta);
+          if (i == 0) {
+            circle.moveTo(x, y);
+          } else {
+            circle.lineTo(x, y);
+          }
+        }
+
+        var geometry = circle.makeGeometry();
     }
 
 });
