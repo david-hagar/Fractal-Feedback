@@ -13,3 +13,6 @@ threejs-src - redundant source code for three.js (three.min.js is the minimized 
 
 open src/feedback.html in a WebGL capable browser
 
+## Example
+
+![screen capture](Screen Shot.png "Screen Capture")
