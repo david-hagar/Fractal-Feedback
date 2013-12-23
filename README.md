@@ -3,7 +3,7 @@
 Recursive fractal feedback using three.js/webgl
 
 
-src/test.html - stand-alone test environment
+src/feedback.html - stand-alone test environment
 
 threejs-src - redundant source code for three.js (three.min.js is the minimized version actually used).
 
@@ -11,6 +11,5 @@ threejs-src - redundant source code for three.js (three.min.js is the minimized 
 
 ## Usage
 
-TODO: Write usage instructions here
-
+open src/feedback.html in a WebGL capable browser
 
