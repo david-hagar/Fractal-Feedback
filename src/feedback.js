@@ -206,19 +206,19 @@ var Feedback = Class.create({
         var leftGeom = new THREE.PlaneGeometry(s, s*aspect);
 
 
-        this._addObject(-100, 0, 1.4, -Math.PI / 4, 1.25, 0.9, leftGeom, this.controls.transforms[0]);
-        this._addObject(100, 0, 1.3, -Math.PI / 4, 1.25, 0.9, leftGeom, this.controls.transforms[1]);
+        this._addObject(-100, 0, 1.4, -Math.PI / 4, 1.25, 0.95, leftGeom, this.controls.transforms[0]);
+        this._addObject(100, 0, 1.3, -Math.PI / 4, 1.25, 0.95, leftGeom, this.controls.transforms[1]);
 
         //todo: make root geom size adjustable
         var geom = new THREE.PlaneGeometry(75, 75);
-        var color = new THREE.Color().setHSL(this.hue, 0.9, 0.9);
+        var color = new THREE.Color().setHSL(this.hue, 0.9, 0.5);
 
         //todo: make opacity controllable
-        this.objectMaterial = new THREE.MeshBasicMaterial({ color:color, side:THREE.DoubleSide,  opacity: 0.9, transparent:true});
+        this.objectMaterial = new THREE.MeshBasicMaterial({ color:color, side:THREE.DoubleSide,  opacity: 0.99, transparent:true});
 
         var mesh = new THREE.Mesh(geom, this.objectMaterial);
         //mesh.position = this.mouse.clone().multiplyScalar(300);
-        //mesh.position.z = 1.65;
+        mesh.position.z = 1.65;
         this.rootObject3D.add(mesh);
 
 
