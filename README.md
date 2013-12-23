@@ -1,7 +1,9 @@
-# Feedback
+# Fractal Feedback
 
-Recursive fractal feedback using three.js/webgl
+Uses Three.js/WebGL to recursively grab the screen and render it back slightly transformed. This is similar to video feedback techniques for creating fractals.
 
+
+# Source
 
 src/feedback.html - stand-alone test environment
 
