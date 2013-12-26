@@ -20,12 +20,12 @@ var Feedback = Class.create({
         this.animationEnabled = true;
 
         this._initLogging();
-        this._initControls();
 
         // three.js setup
         this._three();
 
         this._initObjects();
+        this._initControls();
 
         this.renderer.domElement.addEventListener('mousemove', function(event) {
             feedbackContext.mouseMove(event);
@@ -90,6 +90,33 @@ var Feedback = Class.create({
 
     _initControls: function() {
 
+
+
+        var gui = new dat.GUI();
+        gui.close();
+
+        for (var i = 0; i < this.controls.transforms.length; i++) {
+            var transform = this.controls.transforms[i];
+            var folder = gui.addFolder('Transform ' + (i + 1));
+
+            folder.add(transform, 'xOffset', this.mouseOptions);
+            folder.add(transform, 'yOffset', this.mouseOptions);
+            folder.add(transform, 'scale', this.mouseOptions);
+            folder.add(transform, 'rotate', this.mouseOptions);
+            folder.add(transform, 'aspect', this.mouseOptions);
+            folder.add(transform.textureMaterial, 'opacity',0.5,1.0);
+
+            folder.open();
+
+        }
+
+
+    },
+
+
+    _initObjects: function() {
+
+
         var mouseOptions = this.mouseOptions = [ 'Off', '+X', '-X', '+Y' , '-Y' ];
         this.mouseOptions.off = this.mouseOptions[0];
         this.mouseOptions.mouseX = this.mouseOptions[1];
@@ -116,24 +143,55 @@ var Feedback = Class.create({
         };
 
 
-        var gui = new dat.GUI();
-        gui.close();
-
-        for (var i = 0; i < this.controls.transforms.length; i++) {
-            var transform = this.controls.transforms[i];
-            var folder = gui.addFolder('Transform ' + (i + 1));
-
-            folder.add(transform, 'xOffset', this.mouseOptions);
-            folder.add(transform, 'yOffset', this.mouseOptions);
-            folder.add(transform, 'scale', this.mouseOptions);
-            folder.add(transform, 'rotate', this.mouseOptions);
-            folder.add(transform, 'aspect', this.mouseOptions);
-
-            folder.open();
-
-        }
 
 
+        this.screenCopyScale = 0.5;
+        this.screenCopy = document.createElement('canvas');
+        this.screenCopy.width = this.renderer.domElement.width * this.screenCopyScale;
+        this.screenCopy.height = this.renderer.domElement.height * this.screenCopyScale;
+        this.texture = new THREE.Texture(this.screenCopy);
+
+        this.screenCopyContext = this.screenCopy.getContext('2d');
+
+        var s = 375;
+        var aspect =  this.renderer.domElement.height / this.renderer.domElement.width;
+        var transformBoxGeom = new THREE.PlaneGeometry(s, s*aspect);
+
+        this._addObject(-100, 0, 1.4, -Math.PI / 4, 1.25, 0.95, transformBoxGeom, this.controls.transforms[0]);
+        this._addObject(100, 0, 1.41, -Math.PI / 4, 1.25, 0.95, transformBoxGeom, this.controls.transforms[1]);
+
+        //todo: make root geom size adjustable
+        //var geom = new THREE.PlaneGeometry(75, 75);
+        var geom = new THREE.CircleGeometry(50, 32);
+
+
+        var color = new THREE.Color().setHSL(this.hue, 0.9, 0.5);
+
+        //todo: make opacity controllable
+        this.objectMaterial = new THREE.MeshBasicMaterial({ color:color, side:THREE.DoubleSide,  opacity: 0.99, transparent:true});
+
+        var mesh = new THREE.Mesh(geom, this.objectMaterial);
+        //mesh.position = this.mouse.clone().multiplyScalar(300);
+        mesh.position.z = 1.5;
+        this.rootObject3D.add(mesh);
+
+
+    },
+
+    _addObject: function(x, y, z, rot, scale, opacity, geom, transform) {
+        var textureMaterial = new THREE.MeshBasicMaterial({ map: this.texture, side:THREE.DoubleSide , opacity:opacity, transparent:true});
+
+        var mesh = this.leftMesh = new THREE.Mesh(geom, textureMaterial);
+        mesh.position.x = x;
+        mesh.position.y = y;
+        mesh.position.z = z;
+        mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
+
+        mesh.rotation.z = rot;
+        this.rootObject3D.add(mesh);
+
+        transform.textureMaterial = textureMaterial;
+        transform.mesh = mesh;
     },
 
     _animate: function () {
@@ -192,56 +250,6 @@ var Feedback = Class.create({
 
     },
 
-    _initObjects: function() {
-
-        this.screenCopyScale = 0.5;
-        this.screenCopy = document.createElement('canvas');
-        this.screenCopy.width = this.renderer.domElement.width * this.screenCopyScale;
-        this.screenCopy.height = this.renderer.domElement.height * this.screenCopyScale;
-        this.texture = new THREE.Texture(this.screenCopy);
-
-        this.screenCopyContext = this.screenCopy.getContext('2d');
-
-        var s = 375;
-        var aspect =  this.renderer.domElement.height / this.renderer.domElement.width;
-        var transformBoxGeom = new THREE.PlaneGeometry(s, s*aspect);
-
-        this._addObject(-100, 0, 1.4, -Math.PI / 4, 1.25, 0.95, transformBoxGeom, this.controls.transforms[0]);
-        this._addObject(100, 0, 1.3, -Math.PI / 4, 1.25, 0.95, transformBoxGeom, this.controls.transforms[1]);
-
-        //todo: make root geom size adjustable
-        //var geom = new THREE.PlaneGeometry(75, 75);
-        var geom = new THREE.CircleGeometry(50, 32);
-
-
-        var color = new THREE.Color().setHSL(this.hue, 0.9, 0.5);
-
-        //todo: make opacity controllable
-        this.objectMaterial = new THREE.MeshBasicMaterial({ color:color, side:THREE.DoubleSide,  opacity: 0.99, transparent:true});
-
-        var mesh = new THREE.Mesh(geom, this.objectMaterial);
-        //mesh.position = this.mouse.clone().multiplyScalar(300);
-        mesh.position.z = 1.65;
-        this.rootObject3D.add(mesh);
-
-
-    },
-
-    _addObject: function(x, y, z, rot, scale, opacity, geom, transform) {
-        var textureMaterial = new THREE.MeshBasicMaterial({ map: this.texture, side:THREE.DoubleSide , opacity:opacity, transparent:true});
-
-        var mesh = this.leftMesh = new THREE.Mesh(geom, textureMaterial);
-        mesh.position.x = x;
-        mesh.position.y = y;
-        mesh.position.z = z;
-        mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
-
-        mesh.rotation.z = rot;
-        this.rootObject3D.add(mesh);
-
-        transform.textureMaterial = textureMaterial;
-        transform.mesh = mesh;
-    },
 
     updateFrame: function() {
 
@@ -312,6 +320,9 @@ var Feedback = Class.create({
 
     mouseClick: function(event) {
         this.animationEnabled = ! this.animationEnabled;
+
+        this.lastMouse.x = this.mouse.x; // make the mouse position relative so you can resume from a new position
+        this.lastMouse.y = this.mouse.y;
 
         if (this.animationEnabled)
             this._animate();
