@@ -24,9 +24,9 @@ open src/feedback.html in a WebGL capable browser
 ![diagram](diagram.png "Diagram")
 
 Process
-1. copy the whole screen to an offscreen canvas
-2. draw the center seed shape (simple circle or square)
-3. draw the offscreen canvas rotated and scaled, once for transform 1 and once for transform 2
-4. repeat process
+  1. copy the whole screen to an offscreen canvas
+  2. draw the center seed shape (simple circle or square)
+  3. draw the offscreen canvas rotated and scaled, once for transform 1 and once for transform 2
+  4. repeat process
 
 The controls just modify how the mouse position changes the transform.
