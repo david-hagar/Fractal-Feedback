@@ -92,7 +92,7 @@ var Feedback = Class.create({
 
 
 
-        var gui = new dat.GUI();
+        var gui = new dat.GUI(); // docs at http://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage
         gui.close();
 
         for (var i = 0; i < this.controls.transforms.length; i++) {
