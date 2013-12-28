@@ -5,11 +5,12 @@ Uses Three.js/WebGL to recursively grab the screen and render it back slightly t
 
 # Source
 
-index.html - static page for running the code
-src/feedback.js - all the code
-src/libs - all the javascript libraries used (three.js, etc.)
-
-threejs-src - redundant source code for three.js (three.min.js is the minimized version actually used).
+|    Source     |    Description        | 
+| ------------- |-------------| 
+| index.html       | static page for running the code | 
+| src/feedback.js  | all the feedback javasript        | 
+| src/libs         | all the javascript libraries used (three.js, etc.)    |   
+| threejs-src | redundant source code for three.js (three.min.js is the minimized version actually used). |
 
 
 
