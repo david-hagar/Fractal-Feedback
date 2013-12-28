@@ -19,6 +19,8 @@ open src/feedback.html in a WebGL capable browser
 
 ![screen capture](Screen Shot.png "Screen Capture")
 
+[Gallery of examples ...](gallery/gallery.md)
+
 ## How it works
 
 ![diagram](diagram.png "Diagram")
