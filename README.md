@@ -16,7 +16,13 @@ Uses Three.js/WebGL to recursively grab the screen and render it back slightly t
 
 ## Usage
 
-open src/feedback.html in a WebGL capable browser
+Open index.html in a WebGL capable browser. A running version is published [here](http://david-hagar.github.io/Fractal-Feedback/) .
+
+The mouse controls various transforms that can be configured by opening the controls panel. Clicking pauses the feedback. Clicking again resumes it. Since the controls are relative to the mouse click location you can use this to get larger or smaller values when the mouse runs off the window ( to get mor space in the lowwer right pause click and then resume click in the upper left. 
+
+More precise control can occur by turning all but one transform setting to "Off". This keeps the transform but the mosue no longer changes it.
+
+
 
 ## Example
 
