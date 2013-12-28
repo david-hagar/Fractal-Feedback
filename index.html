@@ -1,7 +1,73 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
-  </body>
+<html lang="en">
+<head>
+    <title>Fractal feedback</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: Monospace;
+            background-color: #ffffff;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #feedback {
+            position: relative;
+            border: 0px solid gray;
+            width: 100%;
+            height: 100%;
+            margin: 1% auto;
+        }
+
+        #moreLink {
+
+            position: absolute;
+            left: 3px;
+            bottom: 3px;
+            width: 100px;
+            text-decoration: none;
+
+        }
+    </style>
+</head>
+<body>
+
+<div id="feedback"></div>
+
+<a href="https://github.com/david-hagar/Fractal-Feedback" id="moreLink">More ...</a>
+</body>
+
+
+<!-- Required Base JavaScripts - https://github.com/PureDiscovery/new_pdls/wiki/JavaScript-UI-Standards -->
+<script src="src/libs/jquery-1.9.1.min.js"></script>
+<!-- Prevents conflicts with other 3rd party JS libraries -->
+<script>
+    jQuery.noConflict();
+</script>
+<script src="src/libs/inheritance-2.7.js"></script>
+<script src="src/libs/min/dat.gui.min.js"></script>
+<!-- / Required Base JavaScripts -->
+
+<script src="src/libs/min/three.min.js"></script>
+<script src="src/libs/Detector.js"></script>
+
+<script src="src/libs/stats.min.js"></script>
+
+<script src="src/feedback.js"></script>
+
+<script>
+    jQuery(document).ready(function () {
+        window.feedback = new Feedback({
+            debugLogging: true,
+            showStats: true,
+            container: '#feedback'
+
+        });
+    });
+</script>
 </html>
