@@ -5,7 +5,9 @@ Uses Three.js/WebGL to recursively grab the screen and render it back slightly t
 
 # Source
 
-src/feedback.html - stand-alone test environment
+index.html - static page for running the code
+src/feedback.js - all the code
+src/libs - all the javascript libraries used (three.js, etc.)
 
 threejs-src - redundant source code for three.js (three.min.js is the minimized version actually used).
 
