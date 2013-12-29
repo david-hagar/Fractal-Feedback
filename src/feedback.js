@@ -18,6 +18,8 @@ var Feedback = Class.create({
         this.mouse = new THREE.Vector3();
         this.lastMouse = new THREE.Vector3();
         this.animationEnabled = true;
+        this.colorCycleInterval = 0.3;
+        this.colorCycleDuty = 0.8;
 
         this._initLogging();
 
@@ -110,6 +112,8 @@ var Feedback = Class.create({
 
         }
 
+        gui.add(this, 'colorCycleInterval',0.01,1.0);
+        gui.add(this, 'colorCycleDuty',0.01,1.0);
 
     },
 
@@ -254,8 +258,10 @@ var Feedback = Class.create({
     updateFrame: function() {
 
         //var hueMouseOffset =  (this.getOffset( this.mouseOptions.mouseX ) +    this.getOffset( this.mouseOptions.mouseY ))*0;
-        var hueSaturation    = (this.hue >0.9 && this.hue<1.0) ? 1.0:0.5;
-        var hueBrightness    = (this.hue >0.9 && this.hue<1.0) ? 0.9:0.4;
+        var isWhite =  (this.hue % this.colorCycleInterval)/this.colorCycleInterval > this.colorCycleDuty;
+        var hueSaturation    = isWhite ? 1.0:0.5;
+        var hueBrightness    = isWhite  ? 0.9:0.4;
+
         this.hue = (this.hue + 0.005 ) % 1;
         this.objectMaterial.color = new THREE.Color().setHSL(this.hue, hueSaturation, hueBrightness);    //todo: make this a control
 
